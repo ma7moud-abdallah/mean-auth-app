@@ -1,0 +1,29 @@
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-fixed-top">
+    <div class="container">
+    <a [routerLink]="['/']" class="navbar-brand">Mean Stack App</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>  
+     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li *ngIf="auth.loggedIn()">
+                <a class="nav-link" [routerLink]="['/dashboard']">Dashboard</a>
+            </li>
+            <li *ngIf="auth.loggedIn()">
+              <a class="nav-link" [routerLink]="['/profile']">Profile</a>
+          </li>
+            
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+              
+            <li *ngIf="!auth.loggedIn()"><a class="nav-link" [routerLink]="['/login']">login</a></li>
+            <li *ngIf="!auth.loggedIn()"><a class="nav-link" [routerLink]="['/register']">register</a></li>
+            <li *ngIf="auth.loggedIn()"><a class="nav-link" [routerLink]="['/']" (click)="logout()">logout</a></li>
+          </ul>
+
+        </div>
+      </div>
+    </nav>
+
+ 
