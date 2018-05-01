@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-   "start":"node index.js"
-    
+    "start": "node server.js"
   },
   "dependencies": {
     "@angular/cli": "^1.4.9",
@@ -17,7 +16,8 @@
     "jsonwebtoken": "*",
     "mongoose": "*",
     "passport": "*",
-    "passport-jwt": "*"
+    "passport-jwt": "*",
+    "socket.io": "^2.0.4"
   },
   "author": "",
   "license": "ISC"

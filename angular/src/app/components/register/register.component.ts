@@ -10,7 +10,7 @@ import { User } from '../../models/user';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  user:User={name:"",email:"",username:"",password:""}
+  user:any={}
   constructor(
     private validat:ValidateService,
     private register:AuthService,
@@ -20,18 +20,17 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
   }
 
-  onSubmit(user){
+  async onSubmit(){
      this.validat.validate(this.user)
-     this.validat.validateEmail(user.email)
-     this.register.register(user)
-     .subscribe(res =>{
-       if(res.success){
-         console.log(res.msg)
+     this.validat.validateEmail(this.user.email)
+     this.user = await this.register.register(this.user)
+       if(this.user.success){
+         console.log(this.user.msg)
          this.router.navigate(['/login'])
        }else{
-        console.log(res.msg)
+        console.log(this.user.msg)
        }
-     })
+     
 
      
   }

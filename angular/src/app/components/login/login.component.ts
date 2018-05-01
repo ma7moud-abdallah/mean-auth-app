@@ -11,7 +11,7 @@ import { User } from '../../models/user';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  user:User={name:"",email:"",username:"",password:""} 
+  user:any={} 
   constructor(
     private router:Router,
     private login:AuthService,
@@ -22,20 +22,20 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  authanticate(user){
+  async authanticate(user){
      
-    this.login.authanticate(this.user)
-    .subscribe(res=>{
-      if(res.success){
-        this.login.storeUser(res.token,res.user)
+   this.user = await this.login.authanticate(this.user)
+
+   if(this.user.success){
+        this.login.storeUser(this.user.token,this.user.user)
         this.fmservice.show('You Are Logged In',{ cssClass: 'alert-success', timeout: 1000 })
+        console.log(this.user)
         this.router.navigate(['/dashboard'])
       }else{
-        this.fmservice.show(res.msg,{ cssClass: 'alert-danger', timeout: 3000 })
+        this.fmservice.show(this.user.msg,{ cssClass: 'alert-danger', timeout: 3000 })
         this.router.navigate(['/login'])
       }
       
-    })
     }
 
 }

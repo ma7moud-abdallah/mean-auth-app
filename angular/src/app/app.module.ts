@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import {RouterModule,Routes} from '@angular/router';
 import {FormsModule} from '@angular/forms'
 import {FlashMessagesModule} from 'angular2-flash-messages';
-import {HttpModule,Headers} from '@angular/http'
+import {HttpClientModule,HttpHeaders} from '@angular/common/http'
 
 import { AuthService } from './services/Auth.service';
 
@@ -16,6 +16,7 @@ import { NavComponent } from './components/nav/nav.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AuthGuardService } from './services/auth-guard.service';
+import { JwtHelperService, JWT_OPTIONS, JwtModule } from '@auth0/angular-jwt';
 
 
 const routes:Routes=[
@@ -25,7 +26,11 @@ const routes:Routes=[
    {path:'login',component:LoginComponent,},
    {path:'profile',component:ProfileComponent,canActivate:[AuthGuardService]}
 
-]
+  ]
+
+  export function tokenGetter() {
+    return localStorage.getItem('id_token');
+  }
 
 @NgModule({
   declarations: [
@@ -36,14 +41,20 @@ const routes:Routes=[
     NavComponent,
     DashboardComponent,
     ProfileComponent
+    
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes),
     FormsModule,
     FlashMessagesModule,
-    HttpModule
-  ],
+    HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter
+        }
+    })
+    ],
   providers: [AuthService,ValidateService,AuthGuardService],
   bootstrap: [AppComponent]
 })

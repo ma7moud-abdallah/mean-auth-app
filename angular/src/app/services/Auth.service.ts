@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {FlashMessagesService} from 'angular2-flash-messages';
-import { tokenNotExpired } from 'angular2-jwt';
-import {Http,Headers} from '@angular/http';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import {HttpClient,HttpHeaders} from '@angular/common/http';
 import 'rxjs/add/operator/map'
 
 
@@ -12,41 +12,38 @@ export class AuthService {
   user
 
   constructor(
+    private jwtHelper: JwtHelperService,
     private fmservice:FlashMessagesService,
-    private http:Http
+    private http:HttpClient
   ) { }
 
-
+   
  register(user){
- return this.http.post('users/register',user)
-  .map(res=>{
-    this.fmservice.show('user registerd',{ cssClass: 'alert-success', timeout: 1000 })
-    return res.json()
-
-  })
+   
+  return this.http.post('users/register',user).toPromise()
+  
  }
 
 
  authanticate(user){
   
-  return this.http.post('users/authenticate',user)
-  .map(res=>{
-    return res.json()
-  })
+  return this.http.post('http://localhost:8080/users/authenticate',user).toPromise()
  }
 
 
  getProfile(){
-  let headers = new Headers()
-  this.loadToken()
-  headers.append('Authorization',this.token)
-  return this.http.get('users/profile',{headers:headers})
-  .map(res=> res.json())
+  let token = localStorage.getItem('id_token')
+  let headers : HttpHeaders = new HttpHeaders()
+  headers = headers.append('Content-Type', 'application/json');
+  headers = headers.append('Authorization' , token)
+  return this.http.get('http://localhost:8080/users/profile',{headers:headers}).toPromise()
  }
 
 
 loggedIn() {
-  return tokenNotExpired('id_token');
+     this.loadToken()
+     return !this.jwtHelper.isTokenExpired(this.token);
+    
 }
 
 
@@ -60,7 +57,7 @@ loggedIn() {
 
 
  private loadToken(){
-   let token = localStorage.getItem('id_token')
+   let token = this.jwtHelper.tokenGetter()
    this.token = token
  }
 

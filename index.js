@@ -8,7 +8,7 @@ const passport = require('passport')
 const users = require('./routes/users')
 const config = require('./config/config')
 
-const port = process.env.PORT || 8080
+
 
 
 
@@ -27,7 +27,7 @@ let app = express()
 
 app.use(cors())
 
-app.listen(port)
+
 
 app.use(express.static(path.join(__dirname,'public')))
 
@@ -54,3 +54,5 @@ app.get('/',function(req,res){
 app.get('*',function(req,res){
     res.sendFile(path.join(__dirname,'public/index.html'))
 })
+
+module.exports = app 

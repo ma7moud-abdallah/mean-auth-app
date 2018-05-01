@@ -7,13 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  user
+  user ={}
   constructor( private auth:AuthService) { }
 
-  ngOnInit() {
-    this.auth.getProfile()
-    .subscribe(data=>this.user=data.user,err=>console.log(err))
-     console.log(this.user)
+  async ngOnInit() {
+  this.user  = await  this.auth.getProfile()
+    
   }
 
 }
