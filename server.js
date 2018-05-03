@@ -7,7 +7,7 @@ const port = process.env.PORT || 8080
 
 server.listen(port)
 
-//  online and offline access
+ //online and offline access
 io.on('connection', function(socket){
   console.log('a user connected');
   socket.on('disconnect', function(){

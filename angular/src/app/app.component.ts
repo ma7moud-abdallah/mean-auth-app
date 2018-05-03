@@ -10,6 +10,6 @@ export class AppComponent implements OnInit {
     
 
   ngOnInit() {
-    var socket = io()
+    //var socket = io()
   }
 }
